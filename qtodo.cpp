@@ -5,7 +5,26 @@
 #include <QGroupBox>
 #include <QHBoxLayout>
 
-//TODO(hugo): How are the data stored ? XML File ? Simple file ?
+#include <QVector>
+#include <QString>
+
+//NOTE(hugo): A ToDo list is just a
+//           vector<pair<string, vector<string> > >
+struct ToDoCategory
+{
+    QString name;
+    //NOTE(hugo): Can maybe be optimized with an array rather than a vector
+    QVector<QString> items;
+};
+
+QVector<ToDoCategory*>
+ReadFile(char* fileName)
+{
+    //TODO(hugo): Implement
+
+    return(QVector<ToDoCategory*>());
+}
+
 //TODO(hugo): Add a system to create, edit and delete ToDoS
 
 int
@@ -19,6 +38,9 @@ main(int argc, char** argv)
     window.resize(400,500);
 
     //TODO(hugo): Loading the file and getting all the infos
+    //IMPORTANT(hugo): For now, I decided that the datas will be
+    // stored in a .td file
+    QVector<ToDoCategory*> todolist = ReadFile("todolist.td");
 
     //NOTE(hugo): Creating main layout
     //IMPORTANT(hugo): Should we set the parent of mainLayout to window ?
@@ -30,6 +52,9 @@ main(int argc, char** argv)
 
     //IMPORTANT(hugo): Parent ?
     QHBoxLayout mainGroupBoxLayout;
+
+    //TODO(hugo): Process todolistvector and display it
+    // in the proper widget (QListView ??)
 
     mainGroupBox.setLayout(&mainGroupBoxLayout);
 
