@@ -8,6 +8,11 @@
 #include <QVector>
 #include <QString>
 
+#include <QFile>
+#include <QTextStream>
+
+#include <QDebug>
+
 //NOTE(hugo): A ToDo list is just a
 //           vector<pair<string, vector<string> > >
 struct ToDoCategory
@@ -18,11 +23,44 @@ struct ToDoCategory
 };
 
 QVector<ToDoCategory*>
-ReadFile(char* fileName)
+LoadFile(QString fileName)
 {
-    //TODO(hugo): Implement
+    QVector<ToDoCategory*> result;
 
-    return(QVector<ToDoCategory*>());
+    QFile file(fileName);
+    if(file.open(QIODevice::ReadOnly))
+    {
+        QTextStream in(&file);
+        uint CategoryCount = in.readLine().toUInt();
+
+        for(int CategoryIndex = 0;
+            CategoryIndex < CategoryCount;
+            ++CategoryIndex)
+        {
+            //NOTE(hugo): Processing the current category in the file
+            ToDoCategory category;
+            QString categoryLine = in.readLine();
+            uint itemCount = categoryLine.split(" ")[0].toUInt();
+            category.name = categoryLine.split(" ")[1];
+            for(int ItemIndex = 0;
+                ItemIndex < itemCount;
+                ++ItemIndex)
+            {
+                category.items.append(in.readLine());
+            }
+
+            result.append(&category);
+        }
+
+        file.close();
+        
+    }
+    else
+    {
+        qDebug() << "Could not open file";
+    }
+    
+    return(result);
 }
 
 //TODO(hugo): Add a system to create, edit and delete ToDoS
@@ -40,8 +78,7 @@ main(int argc, char** argv)
     //TODO(hugo): Loading the file and getting all the infos
     //IMPORTANT(hugo): For now, I decided that the datas will be
     // stored in a .td file
-    QVector<ToDoCategory*> todolist = ReadFile("test.txt");
-
+    QVector<ToDoCategory*> todolist = LoadFile("test.txt");
     //NOTE(hugo): Creating main layout
     //IMPORTANT(hugo): Should we set the parent of mainLayout to window ?
     QVBoxLayout mainLayout;
@@ -53,8 +90,7 @@ main(int argc, char** argv)
     //IMPORTANT(hugo): Parent ?
     QHBoxLayout mainGroupBoxLayout;
 
-    //TODO(hugo): Process todolistvector and display it
-    // in the proper widget (QListView ??)
+    
 
     mainGroupBox.setLayout(&mainGroupBoxLayout);
 
