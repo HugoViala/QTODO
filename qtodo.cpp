@@ -4,9 +4,12 @@
 #include <QVBoxLayout>
 #include <QGroupBox>
 #include <QHBoxLayout>
+#include <QCheckBox>
+#include <QListWidget>
 
 #include <QVector>
 #include <QString>
+#include <QStringList>
 
 #include <QFile>
 #include <QTextStream>
@@ -38,22 +41,21 @@ LoadFile(QString fileName)
             ++CategoryIndex)
         {
             //NOTE(hugo): Processing the current category in the file
-            ToDoCategory category;
+            ToDoCategory *category = new ToDoCategory();
             QString categoryLine = in.readLine();
-            uint itemCount = categoryLine.split(" ")[0].toUInt();
-            category.name = categoryLine.split(" ")[1];
+            QStringList CategoryLineSplitted = categoryLine.split(" ");
+            uint itemCount = CategoryLineSplitted[0].toUInt();
+            category->name = CategoryLineSplitted[1];
             for(int ItemIndex = 0;
                 ItemIndex < itemCount;
                 ++ItemIndex)
             {
-                category.items.append(in.readLine());
+                category->items.append(in.readLine());
             }
 
-            result.append(&category);
+            result.append(category);
         }
-
         file.close();
-        
     }
     else
     {
@@ -78,7 +80,7 @@ main(int argc, char** argv)
     //TODO(hugo): Loading the file and getting all the infos
     //IMPORTANT(hugo): For now, I decided that the datas will be
     // stored in a .td file
-    QVector<ToDoCategory*> todolist = LoadFile("test.txt");
+    QVector<ToDoCategory*> categories = LoadFile("test.txt");
     //NOTE(hugo): Creating main layout
     //IMPORTANT(hugo): Should we set the parent of mainLayout to window ?
     QVBoxLayout mainLayout;
@@ -90,7 +92,30 @@ main(int argc, char** argv)
     //IMPORTANT(hugo): Parent ?
     QHBoxLayout mainGroupBoxLayout;
 
-    
+    for(int CategoryIndex = 0;
+        CategoryIndex < categories.size();
+        ++CategoryIndex)
+    {
+        ToDoCategory CurrentCategory = *(categories[CategoryIndex]);
+        //IMPORTANT(hugo): Parent ?
+        QGroupBox *CategoryGroupBox =
+            new QGroupBox(CurrentCategory.name);
+        QVBoxLayout *CategoryLayout = new QVBoxLayout();
+        //IMPORTANT(hugo): Parent ? Is there a way to insert the
+        // list widget without creating a layout ?
+        QListWidget *CategoryToDos =  new QListWidget();
+
+        for(int ItemIndex = 0;
+            ItemIndex < CurrentCategory.items.size();
+            ++ItemIndex)
+        {
+            CategoryToDos->addItem(new QListWidgetItem(CurrentCategory.items[ItemIndex], CategoryToDos));
+        }
+        
+        CategoryLayout->addWidget(CategoryToDos);
+        CategoryGroupBox->setLayout(CategoryLayout);
+        mainGroupBoxLayout.addWidget(CategoryGroupBox);
+    }
 
     mainGroupBox.setLayout(&mainGroupBoxLayout);
 
