@@ -40,7 +40,7 @@ main(int argc, char** argv)
     //TODO(hugo): Loading the file and getting all the infos
     //IMPORTANT(hugo): For now, I decided that the datas will be
     // stored in a .td file
-    QVector<ToDoCategory*> todolist = ReadFile("todolist.td");
+    QVector<ToDoCategory*> todolist = ReadFile("test.txt");
 
     //NOTE(hugo): Creating main layout
     //IMPORTANT(hugo): Should we set the parent of mainLayout to window ?
