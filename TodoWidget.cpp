@@ -2,7 +2,7 @@
 
 
 ToDoWidget::ToDoWidget(QString filename, QWidget* window)
-        : m_filename(filename)
+        : m_filename(filename), m_categories(), m_QCategories()
 {
     LoadFile();
     //NOTE(hugo): Creating the main groupBox containing all the 
@@ -17,24 +17,29 @@ ToDoWidget::ToDoWidget(QString filename, QWidget* window)
         ++CategoryIndex)
     {
         ToDoCategory* CurrentCategory = m_categories[CategoryIndex];
+        ToDoCategoryWidget* CurrentCategoryWidget = new ToDoCategoryWidget();
         //IMPORTANT(hugo): Parent ?
-        QGroupBox *CategoryGroupBox =
+        CurrentCategoryWidget->GroupBox =
             new QGroupBox(CurrentCategory->name);
-        QVBoxLayout *CategoryLayout = new QVBoxLayout();
+        CurrentCategoryWidget->Layout = new QVBoxLayout();
         //IMPORTANT(hugo): Parent ? Is there a way to insert the
         // list widget without creating a layout ?
-        QListWidget *CategoryToDos =  new QListWidget();
+        CurrentCategoryWidget->Items =  new QListWidget();
 
         for(int ItemIndex = 0;
             ItemIndex < CurrentCategory->items.size();
             ++ItemIndex)
         {
-            CategoryToDos->addItem(new QListWidgetItem(CurrentCategory->items[ItemIndex], CategoryToDos));
+            CurrentCategoryWidget->Items->addItem(
+                new QListWidgetItem(CurrentCategory->items[ItemIndex],
+                                    CurrentCategoryWidget->Items));
         }
         
-        CategoryLayout->addWidget(CategoryToDos);
-        CategoryGroupBox->setLayout(CategoryLayout);
-        m_mainGroupBoxLayout->addWidget(CategoryGroupBox);
+        CurrentCategoryWidget->Layout->addWidget(CurrentCategoryWidget->Items);
+        CurrentCategoryWidget->GroupBox->setLayout(CurrentCategoryWidget->Layout);
+        m_mainGroupBoxLayout->addWidget(CurrentCategoryWidget->GroupBox);
+
+        m_QCategories.append(CurrentCategoryWidget);
     }
 
     m_mainGroupBox->setLayout(m_mainGroupBoxLayout);

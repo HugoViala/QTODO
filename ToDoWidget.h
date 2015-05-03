@@ -22,7 +22,12 @@ struct ToDoCategory
     QVector<QString> items;
 };
 
-
+struct ToDoCategoryWidget
+{
+    QGroupBox* GroupBox;
+    QVBoxLayout* Layout;
+    QListWidget* Items;
+};
 
 class ToDoWidget
 {
@@ -40,8 +45,10 @@ public:
 private:
     QString m_filename;
     QVector<ToDoCategory*> m_categories;
+    QVector<ToDoCategoryWidget*> m_QCategories;
     QGroupBox* m_mainGroupBox;
     QHBoxLayout *m_mainGroupBoxLayout;
+    
     
     void LoadFile();
 };
