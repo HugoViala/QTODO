@@ -4,7 +4,7 @@ set IncludeFlags=-I C:\Qt5.4.1\5.4\msvc2013_64\include\ -I C:\Qt5.4.1\5.4\msvc20
 
 set LinkerFlags=C:\Qt5.4.1\5.4\msvc2013_64\lib\Qt5Widgets.lib C:\Qt5.4.1\5.4\msvc2013_64\lib\Qt5Core.lib
 
-cl %IncludeFlags% qtodo.cpp %LinkerFlags%
+cl %IncludeFlags% qtodo.cpp ToDoWidget.cpp %LinkerFlags%
 
 
 qtodo.exe
