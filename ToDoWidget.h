@@ -32,13 +32,17 @@ public:
     QVector<ToDoCategory*> GetCategories() const {return m_categories;}
     QGroupBox *GetMainGroupBox() const {return m_mainGroupBox;}
 
+    //TODO(hugo): Implement this. Are there slots ?
+    void addToDoItem(QString CategoryName, QString ItemName);
+    void deleteToDoItem(QString ItemName);
+    void SaveFile();
+    
 private:
     QString m_filename;
     QVector<ToDoCategory*> m_categories;
     QGroupBox* m_mainGroupBox;
     QHBoxLayout *m_mainGroupBoxLayout;
     
-
     void LoadFile();
 };
 
