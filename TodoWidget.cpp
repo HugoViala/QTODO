@@ -4,6 +4,7 @@
 ToDoWidget::ToDoWidget(QString filename, QWidget* window)
         : m_filename(filename), m_categories(), m_QCategories()
 {
+    QWidget();
     LoadFile();
     //NOTE(hugo): Creating the main groupBox containing all the 
     //IMPORTANT(hugo): What should the parent of this widget be ?
@@ -86,4 +87,21 @@ ToDoWidget::LoadFile()
     }
 }
 
+void
+ToDoWidget::addToDoItem(QString CategoryName, QString ItemName)
+{
+}
 
+
+void
+ToDoWidget::deleteToDoItem(QString ItemName)
+{
+}
+
+
+void
+ToDoWidget::SaveFile()
+{
+}
+
+#include "ToDoWidget.moc"

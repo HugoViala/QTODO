@@ -29,18 +29,23 @@ struct ToDoCategoryWidget
     QListWidget* Items;
 };
 
-class ToDoWidget
+class ToDoWidget : public QWidget
 {
+    Q_OBJECT
+    
 public:
     ToDoWidget(QString filename, QWidget* window);
     ~ToDoWidget();
     QVector<ToDoCategory*> GetCategories() const {return m_categories;}
     QGroupBox *GetMainGroupBox() const {return m_mainGroupBox;}
 
-    //TODO(hugo): Implement this. Are there slots ?
+public slots:
     void addToDoItem(QString CategoryName, QString ItemName);
     void deleteToDoItem(QString ItemName);
     void SaveFile();
+    
+signals:
+    
     
 private:
     QString m_filename;
