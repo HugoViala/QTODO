@@ -87,15 +87,55 @@ ToDoWidget::LoadFile()
     }
 }
 
+//TODO(hugo): Test this.
 void
 ToDoWidget::addToDoItem(QString CategoryName, QString ItemName)
 {
+    for(int CategoryIndex = 0;
+        CategoryIndex < m_categories.size();
+        CategoryIndex++)
+    {
+        if(m_categories[CategoryIndex]->name == CategoryName)
+        {
+            m_categories[CategoryIndex]->items.push_back(ItemName);
+
+            //NOTE(hugo): I assume that m_categories and m_QCategories
+            // are correlated concerning the category they represent
+
+            m_QCategories[CategoryIndex]->Items->addItem(
+                new QListWidgetItem(ItemName,
+                                    m_QCategories[CategoryIndex]->Items));
+            return;
+        }
+    }
 }
 
-
+//TODO(hugo): Test this.
 void
 ToDoWidget::deleteToDoItem(QString ItemName)
 {
+    for(int CategoryIndex = 0;
+        CategoryIndex < m_categories.size();
+        CategoryIndex++)
+    {
+        for(int ItemIndex = 0;
+            ItemIndex < m_categories[CategoryIndex]->items.size();
+            ItemIndex++)
+        {
+            if(m_categories[CategoryIndex]->items[ItemIndex] == ItemName)
+            {
+                m_categories[CategoryIndex]->items.remove(ItemIndex);
+                break;
+            }
+        }
+
+        m_QCategories[CategoryIndex]->Items->removeItemWidget(
+            new QListWidgetItem(
+                ItemName,
+                m_QCategories[CategoryIndex]->Items
+                                )
+                                                              );
+    }
 }
 
 
