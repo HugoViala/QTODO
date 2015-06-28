@@ -4,9 +4,11 @@
 #include <QVBoxLayout>
 #include <QGroupBox>
 #include <QHBoxLayout>
-#include <QCheckBox>
 #include <QListWidget>
 #include <QMainWindow>
+
+#include <QMenuBar>
+#include <QMenu>
 
 #include <QVector>
 #include <QString>
@@ -47,13 +49,20 @@ main(int argc, char** argv)
 
     window.setCentralWidget(centralWidget);
     
-    //NOTE(hugo): Adding it all to the layout
-    mainLayout.addWidget(mainWidget->GetMainGroupBox());
 
     //NOTE(hugo): Creating the Menu Bar
     //IMPORTANT(hugo): Parents ?
-    QMenuBar* menuBar = new QMenuBar(centralWidget);
+    QMenuBar* menuBar = new QMenuBar(&window);
+    menuBar->setNativeMenuBar(true);
+    menuBar->setDefaultUp(true);
+    QMenu* addTDMenu = new QMenu("Add ToDo");
+    QMenu* delTDMenu = new QMenu("Delete ToDo");
+    menuBar->addMenu(addTDMenu);
+    menuBar->addMenu(delTDMenu);
 
+    //NOTE(hugo): Adding it all to the layout
+    mainLayout.addWidget(menuBar);
+    mainLayout.addWidget(mainWidget->GetMainGroupBox());
     
     //NOTE(hugo): Setting the layout and displaying the window
     //window.setLayout(&mainLayout);
