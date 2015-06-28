@@ -8,5 +8,6 @@ moc ToDoWidget.h -o ToDoWidget.moc
 
 cl %IncludeFlags% qtodo.cpp ToDoWidget.cpp %LinkerFlags%
 
+echo Launching exe file...
 
 qtodo.exe

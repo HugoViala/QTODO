@@ -6,6 +6,7 @@ ToDoWidget::ToDoWidget(QString filename, QWidget* window)
 {
     QWidget();
     LoadFile();
+    
     //NOTE(hugo): Creating the main groupBox containing all the 
     //IMPORTANT(hugo): What should the parent of this widget be ?
     m_mainGroupBox = new QGroupBox("ToDo", window);
@@ -14,134 +15,134 @@ ToDoWidget::ToDoWidget(QString filename, QWidget* window)
     m_mainGroupBoxLayout = new QHBoxLayout();;
 
     for(int CategoryIndex = 0;
-        CategoryIndex < m_categories.size();
-        ++CategoryIndex)
-    {
-        ToDoCategory* CurrentCategory = m_categories[CategoryIndex];
-        ToDoCategoryWidget* CurrentCategoryWidget = new ToDoCategoryWidget();
-        //IMPORTANT(hugo): Parent ?
-        CurrentCategoryWidget->GroupBox =
-            new QGroupBox(CurrentCategory->name);
-        CurrentCategoryWidget->Layout = new QVBoxLayout();
-        //IMPORTANT(hugo): Parent ? Is there a way to insert the
-        // list widget without creating a layout ?
-        CurrentCategoryWidget->Items =  new QListWidget();
+	CategoryIndex < m_categories.size();
+	++CategoryIndex)
+	{
+	    ToDoCategory* CurrentCategory = m_categories[CategoryIndex];
+	    ToDoCategoryWidget* CurrentCategoryWidget = new ToDoCategoryWidget();
+	    //IMPORTANT(hugo): Parent ?
+	    CurrentCategoryWidget->GroupBox =
+		new QGroupBox(CurrentCategory->name);
+	    CurrentCategoryWidget->Layout = new QVBoxLayout();
+	    //IMPORTANT(hugo): Parent ? Is there a way to insert the
+	    // list widget without creating a layout ?
+	    CurrentCategoryWidget->Items =  new QListWidget();
 
-        for(int ItemIndex = 0;
-            ItemIndex < CurrentCategory->items.size();
-            ++ItemIndex)
-        {
-            CurrentCategoryWidget->Items->addItem(
-                new QListWidgetItem(CurrentCategory->items[ItemIndex],
-                                    CurrentCategoryWidget->Items));
-        }
+	    for(int ItemIndex = 0;
+		ItemIndex < CurrentCategory->items.size();
+		++ItemIndex)
+		{
+		    CurrentCategoryWidget->Items->addItem(
+							  new QListWidgetItem(CurrentCategory->items[ItemIndex],
+									      CurrentCategoryWidget->Items));
+		}
         
-        CurrentCategoryWidget->Layout->addWidget(CurrentCategoryWidget->Items);
-        CurrentCategoryWidget->GroupBox->setLayout(CurrentCategoryWidget->Layout);
-        m_mainGroupBoxLayout->addWidget(CurrentCategoryWidget->GroupBox);
+	    CurrentCategoryWidget->Layout->addWidget(CurrentCategoryWidget->Items);
+	    CurrentCategoryWidget->GroupBox->setLayout(CurrentCategoryWidget->Layout);
+	    m_mainGroupBoxLayout->addWidget(CurrentCategoryWidget->GroupBox);
 
-        m_QCategories.append(CurrentCategoryWidget);
-    }
+	    m_QCategories.append(CurrentCategoryWidget);
+	}
 
     m_mainGroupBox->setLayout(m_mainGroupBoxLayout);
 }
 
-ToDoWidget::~ToDoWidget()
-{
-}
+	ToDoWidget::~ToDoWidget()
+	{
+	}
 
 
-void
-ToDoWidget::LoadFile()
-{
-    QFile file(m_filename);
-    if(file.open(QIODevice::ReadOnly))
+    void
+	ToDoWidget::LoadFile()
     {
-        QTextStream in(&file);
-        uint CategoryCount = in.readLine().toUInt();
+	QFile file(m_filename);
+	if(file.open(QIODevice::ReadOnly))
+	    {
+		QTextStream in(&file);
+		uint CategoryCount = in.readLine().toUInt();
 
-        for(int CategoryIndex = 0;
-            CategoryIndex < CategoryCount;
-            ++CategoryIndex)
-        {
-            //NOTE(hugo): Processing the current category in the file
-            ToDoCategory *category = new ToDoCategory();
-            QString categoryLine = in.readLine();
-            QStringList CategoryLineSplitted = categoryLine.split(" ");
-            uint itemCount = CategoryLineSplitted[0].toUInt();
-            category->name = CategoryLineSplitted[1];
-            for(int ItemIndex = 0;
-                ItemIndex < itemCount;
-                ++ItemIndex)
-            {
-                category->items.append(in.readLine());
-            }
+		for(int CategoryIndex = 0;
+		    CategoryIndex < CategoryCount;
+		    ++CategoryIndex)
+		    {
+			//NOTE(hugo): Processing the current category in the file
+			ToDoCategory *category = new ToDoCategory();
+			QString categoryLine = in.readLine();
+			QStringList CategoryLineSplitted = categoryLine.split(" ");
+			uint itemCount = CategoryLineSplitted[0].toUInt();
+			category->name = CategoryLineSplitted[1];
+			for(int ItemIndex = 0;
+			    ItemIndex < itemCount;
+			    ++ItemIndex)
+			    {
+						   category->items.append(in.readLine());
+					       }
 
-            m_categories.append(category);
-        }
-        file.close();
-    }
-    else
-    {
-        qDebug() << "Could not open file";
-    }
-}
+					   m_categories.append(category);
+				       }
+				   file.close();
+			       }
+			   else
+			       {
+				   qDebug() << "Could not open file";
+			       }
+		       }
 
-//TODO(hugo): Test this.
-void
-ToDoWidget::addToDoItem(QString CategoryName, QString ItemName)
-{
-    for(int CategoryIndex = 0;
-        CategoryIndex < m_categories.size();
-        CategoryIndex++)
-    {
-        if(m_categories[CategoryIndex]->name == CategoryName)
-        {
-            m_categories[CategoryIndex]->items.push_back(ItemName);
+		       //TODO(hugo): Test this.
+		       void
+		       ToDoWidget::addToDoItem(QString CategoryName, QString ItemName)
+		       {
+			   for(int CategoryIndex = 0;
+			       CategoryIndex < m_categories.size();
+			       CategoryIndex++)
+			       {
+				   if(m_categories[CategoryIndex]->name == CategoryName)
+				       {
+					   m_categories[CategoryIndex]->items.push_back(ItemName);
 
-            //NOTE(hugo): I assume that m_categories and m_QCategories
-            // are correlated concerning the category they represent
+					   //NOTE(hugo): I assume that m_categories and m_QCategories
+					   // are correlated concerning the category they represent
 
-            m_QCategories[CategoryIndex]->Items->addItem(
-                new QListWidgetItem(ItemName,
-                                    m_QCategories[CategoryIndex]->Items));
-            return;
-        }
-    }
-}
+					   m_QCategories[CategoryIndex]->Items->addItem(
+											new QListWidgetItem(ItemName,
+													    m_QCategories[CategoryIndex]->Items));
+					   return;
+				       }
+			       }
+		       }
 
-//TODO(hugo): Test this.
-void
-ToDoWidget::deleteToDoItem(QString ItemName)
-{
-    for(int CategoryIndex = 0;
-        CategoryIndex < m_categories.size();
-        CategoryIndex++)
-    {
-        for(int ItemIndex = 0;
-            ItemIndex < m_categories[CategoryIndex]->items.size();
-            ItemIndex++)
-        {
-            if(m_categories[CategoryIndex]->items[ItemIndex] == ItemName)
-            {
-                m_categories[CategoryIndex]->items.remove(ItemIndex);
-                break;
-            }
-        }
+		       //TODO(hugo): Test this.
+		       void
+		       ToDoWidget::deleteToDoItem(QString ItemName)
+		       {
+			   for(int CategoryIndex = 0;
+			       CategoryIndex < m_categories.size();
+			       CategoryIndex++)
+			       {
+				   for(int ItemIndex = 0;
+				       ItemIndex < m_categories[CategoryIndex]->items.size();
+				       ItemIndex++)
+				       {
+					   if(m_categories[CategoryIndex]->items[ItemIndex] == ItemName)
+					       {
+						   m_categories[CategoryIndex]->items.remove(ItemIndex);
+						   break;
+					       }
+				       }
 
-        m_QCategories[CategoryIndex]->Items->removeItemWidget(
-            new QListWidgetItem(
-                ItemName,
-                m_QCategories[CategoryIndex]->Items
-                                )
-                                                              );
-    }
-}
+				   m_QCategories[CategoryIndex]->Items->removeItemWidget(
+											 new QListWidgetItem(
+													     ItemName,
+													     m_QCategories[CategoryIndex]->Items
+													     )
+											 );
+			       }
+		       }
 
 
-void
-ToDoWidget::SaveFile()
-{
-}
+		       void
+		       ToDoWidget::SaveFile()
+		       {
+		       }
 
 #include "ToDoWidget.moc"

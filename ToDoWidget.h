@@ -6,6 +6,7 @@
 #include <QListWidget>
 #include <QVector>
 #include <QString>
+#include <QMenuBar>
 
 #include <QDebug>
 
@@ -33,29 +34,29 @@ class ToDoWidget : public QWidget
 {
     Q_OBJECT
     
-public:
+ public:
     ToDoWidget(QString filename, QWidget* window);
     ~ToDoWidget();
     QVector<ToDoCategory*> GetCategories() const {return m_categories;}
     QGroupBox *GetMainGroupBox() const {return m_mainGroupBox;}
-
-public slots:
-    void addToDoItem(QString CategoryName, QString ItemName);
-    void deleteToDoItem(QString ItemName);
-    void SaveFile();
-    
-signals:
     
     
-private:
-    QString m_filename;
-    QVector<ToDoCategory*> m_categories;
-    QVector<ToDoCategoryWidget*> m_QCategories;
-    QGroupBox* m_mainGroupBox;
-    QHBoxLayout *m_mainGroupBoxLayout;
+    public slots:
+      void addToDoItem(QString CategoryName, QString ItemName);
+      void deleteToDoItem(QString ItemName);
+      void SaveFile();
     
+ signals:
+      
+      
+ private:
+      QString m_filename;
+      QVector<ToDoCategory*> m_categories;
+      QVector<ToDoCategoryWidget*> m_QCategories;
+      QGroupBox* m_mainGroupBox;
+      QHBoxLayout *m_mainGroupBoxLayout;
     
-    void LoadFile();
+      void LoadFile();
 };
 
 #endif
