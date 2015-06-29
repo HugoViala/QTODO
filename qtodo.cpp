@@ -6,7 +6,7 @@
 #include <QHBoxLayout>
 #include <QListWidget>
 #include <QMainWindow>
-
+#include <QKeySequence>
 #include <QMenuBar>
 #include <QMenu>
 
@@ -25,7 +25,9 @@
 
 //TODO(hugo): Add a system to create, edit and delete ToDoS
 //TODO(hugo): Maybe stock the todos in a better structure
-// rather than a text file...
+// rather than a text file... Lua ? XML ? JSON ?
+
+
 int
 main(int argc, char** argv)
 {
@@ -51,19 +53,25 @@ main(int argc, char** argv)
     
 
     //NOTE(hugo): Creating the Menu Bar
-    //IMPORTANT(hugo): Parents ?
-    QMenuBar* menuBar = new QMenuBar(&window);
+    //TODO(hugo): Make a more beautiful bar
+    QMenuBar* menuBar = new QMenuBar(centralWidget);
     menuBar->setNativeMenuBar(true);
     menuBar->setDefaultUp(true);
-    QMenu* addTDMenu = new QMenu("Add ToDo");
-    QMenu* delTDMenu = new QMenu("Delete ToDo");
-    menuBar->addMenu(addTDMenu);
-    menuBar->addMenu(delTDMenu);
+    QMenu* menu = new QMenu("ToDoS");
+
+    //NOTE(hugo): we could add a key shortcut here
+    
+    menu->addAction("Add ToDo", mainWidget,
+		    SLOT(addPressed()));
+    menu->addAction("Delete ToDo", mainWidget,
+		    SLOT(delPressed()));
+    menuBar->addMenu(menu);
 
     //NOTE(hugo): Adding it all to the layout
     mainLayout.addWidget(menuBar);
     mainLayout.addWidget(mainWidget->GetMainGroupBox());
-    
+
+        
     //NOTE(hugo): Setting the layout and displaying the window
     //window.setLayout(&mainLayout);
     window.show();

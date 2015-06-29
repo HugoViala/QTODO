@@ -2,7 +2,7 @@
 
 
 ToDoWidget::ToDoWidget(QString filename, QWidget* window)
-        : m_filename(filename), m_categories(), m_QCategories()
+    : m_filename(filename), m_categories(), m_QCategories()
 {
     QWidget();
     LoadFile();
@@ -47,46 +47,46 @@ ToDoWidget::ToDoWidget(QString filename, QWidget* window)
     m_mainGroupBox->setLayout(m_mainGroupBoxLayout);
 }
 
-	ToDoWidget::~ToDoWidget()
+ToDoWidget::~ToDoWidget()
+{
+}
+
+
+void
+ToDoWidget::LoadFile()
+{
+    QFile file(m_filename);
+    if(file.open(QIODevice::ReadOnly))
 	{
+	    QTextStream in(&file);
+	    uint CategoryCount = in.readLine().toUInt();
+
+	    for(int CategoryIndex = 0;
+		CategoryIndex < CategoryCount;
+		++CategoryIndex)
+		{
+		    //NOTE(hugo): Processing the current category in the file
+		    ToDoCategory *category = new ToDoCategory();
+		    QString categoryLine = in.readLine();
+		    QStringList CategoryLineSplitted = categoryLine.split(" ");
+		    uint itemCount = CategoryLineSplitted[0].toUInt();
+		    category->name = CategoryLineSplitted[1];
+		    for(int ItemIndex = 0;
+			ItemIndex < itemCount;
+			++ItemIndex)
+			{
+			    category->items.append(in.readLine());
+			}
+
+		    m_categories.append(category);
+		}
+	    file.close();
 	}
-
-
-    void
-	ToDoWidget::LoadFile()
-    {
-	QFile file(m_filename);
-	if(file.open(QIODevice::ReadOnly))
-	    {
-		QTextStream in(&file);
-		uint CategoryCount = in.readLine().toUInt();
-
-		for(int CategoryIndex = 0;
-		    CategoryIndex < CategoryCount;
-		    ++CategoryIndex)
-		    {
-			//NOTE(hugo): Processing the current category in the file
-			ToDoCategory *category = new ToDoCategory();
-			QString categoryLine = in.readLine();
-			QStringList CategoryLineSplitted = categoryLine.split(" ");
-			uint itemCount = CategoryLineSplitted[0].toUInt();
-			category->name = CategoryLineSplitted[1];
-			for(int ItemIndex = 0;
-			    ItemIndex < itemCount;
-			    ++ItemIndex)
-			    {
-						   category->items.append(in.readLine());
-					       }
-
-					   m_categories.append(category);
-				       }
-				   file.close();
-			       }
-			   else
-			       {
-				   qDebug() << "Could not open file";
-			       }
-		       }
+    else
+	{
+	    qDebug() << "Could not open file";
+	}
+}
 
 		       //TODO(hugo): Test this.
 		       void
@@ -111,38 +111,61 @@ ToDoWidget::ToDoWidget(QString filename, QWidget* window)
 			       }
 		       }
 
-		       //TODO(hugo): Test this.
-		       void
-		       ToDoWidget::deleteToDoItem(QString ItemName)
-		       {
-			   for(int CategoryIndex = 0;
-			       CategoryIndex < m_categories.size();
-			       CategoryIndex++)
-			       {
-				   for(int ItemIndex = 0;
-				       ItemIndex < m_categories[CategoryIndex]->items.size();
-				       ItemIndex++)
-				       {
-					   if(m_categories[CategoryIndex]->items[ItemIndex] == ItemName)
-					       {
-						   m_categories[CategoryIndex]->items.remove(ItemIndex);
-						   break;
-					       }
-				       }
+//TODO(hugo): Test this.
+void
+ToDoWidget::deleteToDoItem(QString ItemName)
+{
+    for(int CategoryIndex = 0;
+	CategoryIndex < m_categories.size();
+	CategoryIndex++)
+	{
+	    for(int ItemIndex = 0;
+		ItemIndex < m_categories[CategoryIndex]->items.size();
+		ItemIndex++)
+		{
+		    if(m_categories[CategoryIndex]->items[ItemIndex] == ItemName)
+			{
+			    m_categories[CategoryIndex]->items.remove(ItemIndex);
+			    break;
+			}
+		}
 
-				   m_QCategories[CategoryIndex]->Items->removeItemWidget(
-											 new QListWidgetItem(
-													     ItemName,
-													     m_QCategories[CategoryIndex]->Items
-													     )
-											 );
-			       }
-		       }
+	    m_QCategories[CategoryIndex]->Items->removeItemWidget(
+								  new QListWidgetItem(
+										      ItemName,
+										      m_QCategories[CategoryIndex]->Items
+										      )
+								  );
+	}
+}
 
 
-		       void
-		       ToDoWidget::SaveFile()
-		       {
-		       }
+void
+ToDoWidget::SaveFile()
+{
+}
+
+void
+ToDoWidget::addPressed()
+{
+    qDebug("calling");
+    QMessageBox::information(0,
+			     QString("Add"),
+			     QString("Add"),
+			     QMessageBox::Ok);
+
+}
+
+
+void
+ToDoWidget::delPressed()
+{
+    QMessageBox::information(0,
+			     QString("Delete"),
+			     QString("Delete"),
+			     QMessageBox::Ok);
+}
 
 #include "ToDoWidget.moc"
+		       
+		       

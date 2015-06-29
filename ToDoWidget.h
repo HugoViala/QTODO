@@ -8,6 +8,8 @@
 #include <QString>
 #include <QMenuBar>
 
+#include <QMessageBox>
+
 #include <QDebug>
 
 
@@ -40,23 +42,23 @@ class ToDoWidget : public QWidget
     QVector<ToDoCategory*> GetCategories() const {return m_categories;}
     QGroupBox *GetMainGroupBox() const {return m_mainGroupBox;}
     
-    
     public slots:
-      void addToDoItem(QString CategoryName, QString ItemName);
-      void deleteToDoItem(QString ItemName);
-      void SaveFile();
-    
- signals:
-      
+	void SaveFile();
+	void addPressed();
+	void delPressed();
+
       
  private:
-      QString m_filename;
-      QVector<ToDoCategory*> m_categories;
-      QVector<ToDoCategoryWidget*> m_QCategories;
-      QGroupBox* m_mainGroupBox;
-      QHBoxLayout *m_mainGroupBoxLayout;
+	QString m_filename;
+	QVector<ToDoCategory*> m_categories;
+	QVector<ToDoCategoryWidget*> m_QCategories;
+	QGroupBox* m_mainGroupBox;
+	QHBoxLayout *m_mainGroupBoxLayout;
     
-      void LoadFile();
+	void LoadFile();
+	void addToDoItem(QString CategoryName, QString ItemName);
+	void deleteToDoItem(QString ItemName);
+
 };
 
 #endif
