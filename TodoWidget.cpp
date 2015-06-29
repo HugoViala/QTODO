@@ -125,7 +125,6 @@ ToDoWidget::deleteToDoItem()
 {
     QString ItemName = toDoNameLineEdit->text();
     bool found = false;
-    qDebug(ItemName.toLatin1());
     for(int CategoryIndex = 0;
 	CategoryIndex < m_categories.size();
 	CategoryIndex++)
