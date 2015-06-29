@@ -49,6 +49,7 @@ ToDoWidget::ToDoWidget(QString filename, QWidget* window)
 
 ToDoWidget::~ToDoWidget()
 {
+    SaveFile();
 }
 
 
@@ -88,7 +89,6 @@ ToDoWidget::LoadFile()
 	}
 }
 
-//TODO(hugo): Test this.
 void
 ToDoWidget::addToDoItem()
 {
@@ -115,9 +115,9 @@ ToDoWidget::addToDoItem()
 	}
 
     delete actionWindow;
+    SaveFile();
 }
 
-//TODO(hugo): Test this.
 void
 ToDoWidget::deleteToDoItem()
 {
@@ -152,78 +152,116 @@ ToDoWidget::deleteToDoItem()
 	}
 
     delete actionWindow;
+    SaveFile();
 }
 
 
 void
 ToDoWidget::SaveFile()
 {
+    qDebug("I shall save");
+    QString textFile;
+
+    //NOTE(hugo): computing textFile
+    textFile += QString::number(m_categories.size());
+    textFile += "\n";
+    for(int CatIndex = 0;
+	CatIndex < m_categories.size();
+	CatIndex++)
+	{
+	    ToDoCategory* currentCategory = m_categories[CatIndex];
+	    textFile += QString::number(currentCategory->
+					items.size());
+	    textFile += " ";
+	    textFile += currentCategory->name;
+	    textFile += "\n";
+
+	    for(int ItemIndex = 0;
+		ItemIndex < currentCategory->items.size();
+		ItemIndex++)
+		{
+		    textFile += currentCategory->items[ItemIndex];
+		    textFile += "\n";
+		}
+	}
+    
+    QFile file(m_filename);
+    if(file.open(QIODevice::ReadWrite))
+	{
+	    QTextStream stream(&file);
+	    stream << textFile;
+	}
+    else
+	{
+	    qDebug("faiiil");
+	}
+    
 }
 
-void
-ToDoWidget::addPressed()
-{
+    void
+	ToDoWidget::addPressed()
+    {
     
-    actionWindow = new QWidget();
-    actionWindow->setVisible(true);
-    actionWindow->setWindowTitle("What to add ?");
+	actionWindow = new QWidget();
+	actionWindow->setVisible(true);
+	actionWindow->setWindowTitle("What to add ?");
 
-    //TODO(hugo): Set the window size
+	//TODO(hugo): Set the window size
     
-    QVBoxLayout* mainLayout = new QVBoxLayout();
-    QLabel* catNameLabel = new QLabel("Category Name",
-				      actionWindow);
-    catNameLineEdit = new QLineEdit(actionWindow);
-    QLabel* toDoNameLabel = new QLabel("ToDo Name",
-				       actionWindow);
-    toDoNameLineEdit = new QLineEdit(actionWindow);
+	QVBoxLayout* mainLayout = new QVBoxLayout();
+	QLabel* catNameLabel = new QLabel("Category Name",
+					  actionWindow);
+	catNameLineEdit = new QLineEdit(actionWindow);
+	QLabel* toDoNameLabel = new QLabel("ToDo Name",
+					   actionWindow);
+	toDoNameLineEdit = new QLineEdit(actionWindow);
 
-    QPushButton* okButton = new QPushButton("Valider",
-					    actionWindow);
+	QPushButton* okButton = new QPushButton("Valider",
+						actionWindow);
     
     
-    mainLayout->addWidget(catNameLabel);
-    mainLayout->addWidget(catNameLineEdit);
-    mainLayout->addWidget(toDoNameLabel);
-    mainLayout->addWidget(toDoNameLineEdit);
-    mainLayout->addWidget(okButton);
+	mainLayout->addWidget(catNameLabel);
+	mainLayout->addWidget(catNameLineEdit);
+	mainLayout->addWidget(toDoNameLabel);
+	mainLayout->addWidget(toDoNameLineEdit);
+	mainLayout->addWidget(okButton);
     
-    actionWindow->setLayout(mainLayout);
+	actionWindow->setLayout(mainLayout);
 
-    QObject::connect(okButton,
-		     SIGNAL(clicked()),
-		     this,
-		     SLOT(addToDoItem()));
-}
+	QObject::connect(okButton,
+			 SIGNAL(clicked()),
+			 this,
+			 SLOT(addToDoItem()));
+    }
 
 
-void
-ToDoWidget::delPressed()
-{
+    void
+	ToDoWidget::delPressed()
+    {
     
-    actionWindow = new QWidget();
-    actionWindow->setVisible(true);
-    actionWindow->setWindowTitle("What to delete ?");
+	actionWindow = new QWidget();
+	actionWindow->setVisible(true);
+	actionWindow->setWindowTitle("What to delete ?");
 
-    QVBoxLayout* mainLayout = new QVBoxLayout();
-    QLabel* toDoNameLabel = new QLabel("ToDo Name",
-				       actionWindow);
-    toDoNameLineEdit = new QLineEdit(actionWindow);
+	QVBoxLayout* mainLayout = new QVBoxLayout();
+	QLabel* toDoNameLabel = new QLabel("ToDo Name",
+					   actionWindow);
+	toDoNameLineEdit = new QLineEdit(actionWindow);
 
-    QPushButton* okButton = new QPushButton("Valider",
-					    actionWindow);
+	QPushButton* okButton = new QPushButton("Valider",
+						actionWindow);
     
-    mainLayout->addWidget(toDoNameLabel);
-    mainLayout->addWidget(toDoNameLineEdit);
-    mainLayout->addWidget(okButton);
+	mainLayout->addWidget(toDoNameLabel);
+	mainLayout->addWidget(toDoNameLineEdit);
+	mainLayout->addWidget(okButton);
     
-    actionWindow->setLayout(mainLayout);
+	actionWindow->setLayout(mainLayout);
 
-    QObject::connect(okButton,
-		     SIGNAL(clicked()),
-		     this,
-		     SLOT(deleteToDoItem()));
-}
+	QObject::connect(okButton,
+			 SIGNAL(clicked()),
+			 this,
+			 SLOT(deleteToDoItem()));
+    }
 
 #include "ToDoWidget.moc"
 		       
