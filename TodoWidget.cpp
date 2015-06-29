@@ -51,7 +51,7 @@ ToDoWidget::ToDoWidget(QString filename, QWidget* window)
 
 ToDoWidget::~ToDoWidget()
 {
-    SaveFile();
+
 }
 
 
@@ -124,6 +124,7 @@ void
 ToDoWidget::deleteToDoItem()
 {
     QString ItemName = toDoNameLineEdit->text();
+    bool found = false;
     qDebug(ItemName.toLatin1());
     for(int CategoryIndex = 0;
 	CategoryIndex < m_categories.size();
@@ -144,6 +145,7 @@ ToDoWidget::deleteToDoItem()
 			    FoundIndex = ItemIndex;
 			    m_categories[CategoryIndex]->
 				items.remove(ItemIndex);
+			    found = true;
 			    break;
 			}
 		}
@@ -151,7 +153,12 @@ ToDoWidget::deleteToDoItem()
 	    if(FoundIndex != -1)
 		m_QCategories[CategoryIndex]->
 		    Items->takeItem(FoundIndex);
+
 	}
+    if(!found)
+	QMessageBox::warning(0,
+			     "ToDo not found",
+			     "ToDo not found");
 
     delete actionWindow;
     SaveFile();
@@ -161,9 +168,10 @@ ToDoWidget::deleteToDoItem()
 void
 ToDoWidget::SaveFile()
 {
+    //NOTE(hugo) : To avoid any issues, we delete the file
+    // each time so that it is not overwritten
     QFile::remove(m_filename);
     
-    qDebug("I shall save");
     QString textFile;
 
     //NOTE(hugo): computing textFile
@@ -197,7 +205,7 @@ ToDoWidget::SaveFile()
 	}
     else
 	{
-	    qDebug("faiiil");
+	    qDebug("Failing to open the file.");
 	}
     
 }
@@ -210,7 +218,7 @@ ToDoWidget::addPressed()
     actionWindow->setVisible(true);
     actionWindow->setWindowTitle("What to add ?");
     
-    //TODO(hugo): Set the window size
+    actionWindow->resize(200,100);
     
     QVBoxLayout* mainLayout = new QVBoxLayout();
     QLabel* catNameLabel = new QLabel("Category Name",
@@ -246,6 +254,8 @@ ToDoWidget::delPressed()
     actionWindow = new QWidget();
     actionWindow->setVisible(true);
     actionWindow->setWindowTitle("What to delete ?");
+
+    actionWindow->resize(200,100);
     
     QVBoxLayout* mainLayout = new QVBoxLayout();
     QLabel* toDoNameLabel = new QLabel("ToDo Name",
@@ -273,6 +283,8 @@ ToDoWidget::addCatPressed()
     actionWindow = new QWidget();
     actionWindow->setVisible(true);
     actionWindow->setWindowTitle("Category Name");
+
+    actionWindow->resize(200,100);
     
     QVBoxLayout* mainLayout = new QVBoxLayout();
     QLabel* catNameLabel = new QLabel("Category Name",
@@ -300,6 +312,8 @@ ToDoWidget::delCatPressed()
     actionWindow = new QWidget();
     actionWindow->setVisible(true);
     actionWindow->setWindowTitle("What to delete ?");
+
+    actionWindow->resize(200,100);
     
     QVBoxLayout* mainLayout = new QVBoxLayout();
     QLabel* catNameLabel = new QLabel("Category Name",
@@ -385,6 +399,12 @@ ToDoWidget::deleteCategory()
 	    m_categories.remove(FoundIndex);
 	    qDebug(QString::number(m_categories.size()).toLatin1());
 	    m_QCategories.remove(FoundIndex);
+	}
+    else
+	{
+	    QMessageBox::warning(0,
+				 "Category not found",
+				 "Category not found");
 	}
     
     delete actionWindow;
