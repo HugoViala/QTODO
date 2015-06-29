@@ -23,7 +23,6 @@
 
 #include "ToDoWidget.h"
 
-//TODO(hugo): Add a system to create, edit and delete ToDoS
 //TODO(hugo): Maybe stock the todos in a better structure
 // rather than a text file... Lua ? XML ? JSON ?
 
@@ -60,10 +59,9 @@ main(int argc, char** argv)
     QMenu* ToDoMenu = new QMenu("ToDoS");
     QMenu* CatMenu = new QMenu("Categories");
 
-    //NOTE(hugo): we could add a key shortcut here
-    
     ToDoMenu->addAction("Add ToDo", mainWidget,
-		    SLOT(addPressed()));
+			SLOT(addPressed()),
+			QKeySequence("Ctrl+N"));
     ToDoMenu->addAction("Delete ToDo", mainWidget,
 		    SLOT(delPressed()));
     menuBar->addMenu(ToDoMenu);
