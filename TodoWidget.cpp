@@ -122,28 +122,36 @@ void
 ToDoWidget::deleteToDoItem()
 {
     QString ItemName = toDoNameLineEdit->text();
+    qDebug(ItemName.toLatin1());
     for(int CategoryIndex = 0;
 	CategoryIndex < m_categories.size();
 	CategoryIndex++)
 	{
+	    int FoundIndex = -1;
 	    for(int ItemIndex = 0;
-		ItemIndex < m_categories[CategoryIndex]->items.size();
+		ItemIndex < m_categories[CategoryIndex]->
+		    items.size();
 		ItemIndex++)
 		{
-		    if(m_categories[CategoryIndex]->items[ItemIndex] == ItemName)
+		    QString currentItem = m_categories[CategoryIndex]->
+			items[ItemIndex];
+		    if(QString::compare(currentItem,
+					ItemName)
+		       == 0)
 			{
-			    m_categories[CategoryIndex]->items.remove(ItemIndex);
+			    FoundIndex = ItemIndex;
+			    m_categories[CategoryIndex]->
+				items.remove(ItemIndex);
 			    break;
 			}
 		}
 
-	    m_QCategories[CategoryIndex]->Items->removeItemWidget(
-								  new QListWidgetItem(
-										      ItemName,
-										      m_QCategories[CategoryIndex]->Items
-										      )
-								  );
+	    if(FoundIndex != -1)
+		m_QCategories[CategoryIndex]->
+		    Items->takeItem(FoundIndex);
 	}
+
+    delete actionWindow;
 }
 
 
@@ -155,15 +163,13 @@ ToDoWidget::SaveFile()
 void
 ToDoWidget::addPressed()
 {
-    QMessageBox::information(0,
-			     QString("Add"),
-			     QString("Add"),
-			     QMessageBox::Ok);
-
+    
     actionWindow = new QWidget();
     actionWindow->setVisible(true);
     actionWindow->setWindowTitle("What to add ?");
 
+    //TODO(hugo): Set the window size
+    
     QVBoxLayout* mainLayout = new QVBoxLayout();
     QLabel* catNameLabel = new QLabel("Category Name",
 				      actionWindow);
@@ -194,10 +200,29 @@ ToDoWidget::addPressed()
 void
 ToDoWidget::delPressed()
 {
-    QMessageBox::information(0,
-			     QString("Delete"),
-			     QString("Delete"),
-			     QMessageBox::Ok);
+    
+    actionWindow = new QWidget();
+    actionWindow->setVisible(true);
+    actionWindow->setWindowTitle("What to delete ?");
+
+    QVBoxLayout* mainLayout = new QVBoxLayout();
+    QLabel* toDoNameLabel = new QLabel("ToDo Name",
+				       actionWindow);
+    toDoNameLineEdit = new QLineEdit(actionWindow);
+
+    QPushButton* okButton = new QPushButton("Valider",
+					    actionWindow);
+    
+    mainLayout->addWidget(toDoNameLabel);
+    mainLayout->addWidget(toDoNameLineEdit);
+    mainLayout->addWidget(okButton);
+    
+    actionWindow->setLayout(mainLayout);
+
+    QObject::connect(okButton,
+		     SIGNAL(clicked()),
+		     this,
+		     SLOT(deleteToDoItem()));
 }
 
 #include "ToDoWidget.moc"
