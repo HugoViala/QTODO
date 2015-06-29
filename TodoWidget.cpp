@@ -32,14 +32,16 @@ ToDoWidget::ToDoWidget(QString filename, QWidget* window)
 		ItemIndex < CurrentCategory->items.size();
 		++ItemIndex)
 		{
-		    CurrentCategoryWidget->Items->addItem(
-							  new QListWidgetItem(CurrentCategory->items[ItemIndex],
+		    CurrentCategoryWidget->Items->addItem(new QListWidgetItem(CurrentCategory->items[ItemIndex],
 									      CurrentCategoryWidget->Items));
 		}
         
-	    CurrentCategoryWidget->Layout->addWidget(CurrentCategoryWidget->Items);
-	    CurrentCategoryWidget->GroupBox->setLayout(CurrentCategoryWidget->Layout);
-	    m_mainGroupBoxLayout->addWidget(CurrentCategoryWidget->GroupBox);
+	    CurrentCategoryWidget->Layout->
+		addWidget(CurrentCategoryWidget->Items);
+	    CurrentCategoryWidget->GroupBox->
+		setLayout(CurrentCategoryWidget->Layout);
+	    m_mainGroupBoxLayout->
+		addWidget(CurrentCategoryWidget->GroupBox);
 
 	    m_QCategories.append(CurrentCategoryWidget);
 	}
@@ -159,6 +161,8 @@ ToDoWidget::deleteToDoItem()
 void
 ToDoWidget::SaveFile()
 {
+    QFile::remove(m_filename);
+    
     qDebug("I shall save");
     QString textFile;
 
@@ -198,71 +202,199 @@ ToDoWidget::SaveFile()
     
 }
 
-    void
-	ToDoWidget::addPressed()
-    {
+void
+ToDoWidget::addPressed()
+{
     
-	actionWindow = new QWidget();
-	actionWindow->setVisible(true);
-	actionWindow->setWindowTitle("What to add ?");
+    actionWindow = new QWidget();
+    actionWindow->setVisible(true);
+    actionWindow->setWindowTitle("What to add ?");
+    
+    //TODO(hugo): Set the window size
+    
+    QVBoxLayout* mainLayout = new QVBoxLayout();
+    QLabel* catNameLabel = new QLabel("Category Name",
+				      actionWindow);
+    catNameLineEdit = new QLineEdit(actionWindow);
+    QLabel* toDoNameLabel = new QLabel("ToDo Name",
+				       actionWindow);
+    toDoNameLineEdit = new QLineEdit(actionWindow);
+    
+    QPushButton* okButton = new QPushButton("Valider",
+					    actionWindow);
+    
+    
+    mainLayout->addWidget(catNameLabel);
+    mainLayout->addWidget(catNameLineEdit);
+    mainLayout->addWidget(toDoNameLabel);
+    mainLayout->addWidget(toDoNameLineEdit);
+    mainLayout->addWidget(okButton);
+    
+    actionWindow->setLayout(mainLayout);
 
-	//TODO(hugo): Set the window size
-    
-	QVBoxLayout* mainLayout = new QVBoxLayout();
-	QLabel* catNameLabel = new QLabel("Category Name",
-					  actionWindow);
-	catNameLineEdit = new QLineEdit(actionWindow);
-	QLabel* toDoNameLabel = new QLabel("ToDo Name",
-					   actionWindow);
-	toDoNameLineEdit = new QLineEdit(actionWindow);
-
-	QPushButton* okButton = new QPushButton("Valider",
-						actionWindow);
-    
-    
-	mainLayout->addWidget(catNameLabel);
-	mainLayout->addWidget(catNameLineEdit);
-	mainLayout->addWidget(toDoNameLabel);
-	mainLayout->addWidget(toDoNameLineEdit);
-	mainLayout->addWidget(okButton);
-    
-	actionWindow->setLayout(mainLayout);
-
-	QObject::connect(okButton,
-			 SIGNAL(clicked()),
+    QObject::connect(okButton,
+		     SIGNAL(clicked()),
 			 this,
-			 SLOT(addToDoItem()));
-    }
+		     SLOT(addToDoItem()));
+}
 
 
-    void
-	ToDoWidget::delPressed()
-    {
+void
+ToDoWidget::delPressed()
+{
     
-	actionWindow = new QWidget();
-	actionWindow->setVisible(true);
-	actionWindow->setWindowTitle("What to delete ?");
-
-	QVBoxLayout* mainLayout = new QVBoxLayout();
-	QLabel* toDoNameLabel = new QLabel("ToDo Name",
-					   actionWindow);
-	toDoNameLineEdit = new QLineEdit(actionWindow);
-
-	QPushButton* okButton = new QPushButton("Valider",
-						actionWindow);
+    actionWindow = new QWidget();
+    actionWindow->setVisible(true);
+    actionWindow->setWindowTitle("What to delete ?");
     
-	mainLayout->addWidget(toDoNameLabel);
-	mainLayout->addWidget(toDoNameLineEdit);
-	mainLayout->addWidget(okButton);
+    QVBoxLayout* mainLayout = new QVBoxLayout();
+    QLabel* toDoNameLabel = new QLabel("ToDo Name",
+				       actionWindow);
+    toDoNameLineEdit = new QLineEdit(actionWindow);
     
-	actionWindow->setLayout(mainLayout);
+    QPushButton* okButton = new QPushButton("Valider",
+					    actionWindow);
+    
+    mainLayout->addWidget(toDoNameLabel);
+    mainLayout->addWidget(toDoNameLineEdit);
+    mainLayout->addWidget(okButton);
+    
+    actionWindow->setLayout(mainLayout);
+    
+    QObject::connect(okButton,
+		     SIGNAL(clicked()),
+		     this,
+		     SLOT(deleteToDoItem()));
+}
 
-	QObject::connect(okButton,
-			 SIGNAL(clicked()),
-			 this,
-			 SLOT(deleteToDoItem()));
-    }
+void
+ToDoWidget::addCatPressed()
+{
+    actionWindow = new QWidget();
+    actionWindow->setVisible(true);
+    actionWindow->setWindowTitle("Category Name");
+    
+    QVBoxLayout* mainLayout = new QVBoxLayout();
+    QLabel* catNameLabel = new QLabel("Category Name",
+				       actionWindow);
+    catNameLineEdit = new QLineEdit(actionWindow);
+    
+    QPushButton* okButton = new QPushButton("Valider",
+					    actionWindow);
+    
+    mainLayout->addWidget(catNameLabel);
+    mainLayout->addWidget(catNameLineEdit);
+    mainLayout->addWidget(okButton);
+    
+    actionWindow->setLayout(mainLayout);
+    
+    QObject::connect(okButton,
+		     SIGNAL(clicked()),
+		     this,
+		     SLOT(addCategory()));
+}
+
+void
+ToDoWidget::delCatPressed()
+{
+    actionWindow = new QWidget();
+    actionWindow->setVisible(true);
+    actionWindow->setWindowTitle("What to delete ?");
+    
+    QVBoxLayout* mainLayout = new QVBoxLayout();
+    QLabel* catNameLabel = new QLabel("Category Name",
+				       actionWindow);
+    catNameLineEdit = new QLineEdit(actionWindow);
+    
+    QPushButton* okButton = new QPushButton("Valider",
+					    actionWindow);
+    
+    mainLayout->addWidget(catNameLabel);
+    mainLayout->addWidget(catNameLineEdit);
+    mainLayout->addWidget(okButton);
+    
+    actionWindow->setLayout(mainLayout);
+    
+    QObject::connect(okButton,
+		     SIGNAL(clicked()),
+		     this,
+		     SLOT(deleteCategory()));
+}
+
+void
+ToDoWidget::addCategory()
+{
+    QString catName = catNameLineEdit->text();
+    ToDoCategory* newCategory = new ToDoCategory();
+    newCategory->name = catName;
+    newCategory->items = QVector<QString>();
+
+    m_categories.append(newCategory);
+
+    ToDoCategoryWidget* newQCategory = new ToDoCategoryWidget();
+    newQCategory->GroupBox = new QGroupBox(catName,
+					   this);
+    newQCategory->Layout = new QVBoxLayout();
+    newQCategory->Items = new QListWidget();
+
+    newQCategory->Layout->addWidget(newQCategory->Items);
+    newQCategory->GroupBox->setLayout(newQCategory->Layout);
+    m_mainGroupBoxLayout->addWidget(newQCategory->GroupBox);
+
+    m_QCategories.append(newQCategory);
+
+    
+    delete actionWindow;
+
+    SaveFile();
+}
+
+void
+ToDoWidget::deleteCategory()
+{
+
+    QString categoryName = catNameLineEdit->text();
+    int FoundIndex = -1;
+
+    for(int CatIndex = 0;
+	CatIndex < m_categories.size();
+	CatIndex++)
+	{
+	    QString currentCategoryName =
+		m_categories[CatIndex]->name;
+	    if(QString::compare(currentCategoryName,
+				categoryName) == 0)
+		{
+		    FoundIndex = CatIndex;
+		    break;
+		}
+	}
+
+    if(FoundIndex != -1)
+	{
+	    m_mainGroupBoxLayout->removeWidget(
+		       m_QCategories[FoundIndex]->GroupBox);
+    
+	    delete m_QCategories[FoundIndex]->GroupBox;
+
+	    m_categories[FoundIndex]->items.clear();
+    
+	    delete m_categories[FoundIndex];
+	    delete m_QCategories[FoundIndex];
+	    qDebug(QString::number(m_categories.size()).toLatin1());
+	    m_categories.remove(FoundIndex);
+	    qDebug(QString::number(m_categories.size()).toLatin1());
+	    m_QCategories.remove(FoundIndex);
+	}
+    
+    delete actionWindow;
+
+    SaveFile();
+}
+
+
+
 
 #include "ToDoWidget.moc"
 		       
-		       
+

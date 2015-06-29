@@ -50,7 +50,10 @@ class ToDoWidget : public QWidget
 	void delPressed();
 	void addToDoItem();
 	void deleteToDoItem();
-      
+	void addCatPressed();
+	void delCatPressed();
+	void addCategory();
+	void deleteCategory();
  private:
 	QString m_filename;
 	QVector<ToDoCategory*> m_categories;

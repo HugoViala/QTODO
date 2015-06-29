@@ -57,16 +57,23 @@ main(int argc, char** argv)
     QMenuBar* menuBar = new QMenuBar(centralWidget);
     menuBar->setNativeMenuBar(true);
     menuBar->setDefaultUp(true);
-    QMenu* menu = new QMenu("ToDoS");
+    QMenu* ToDoMenu = new QMenu("ToDoS");
+    QMenu* CatMenu = new QMenu("Categories");
 
     //NOTE(hugo): we could add a key shortcut here
     
-    menu->addAction("Add ToDo", mainWidget,
+    ToDoMenu->addAction("Add ToDo", mainWidget,
 		    SLOT(addPressed()));
-    menu->addAction("Delete ToDo", mainWidget,
+    ToDoMenu->addAction("Delete ToDo", mainWidget,
 		    SLOT(delPressed()));
-    menuBar->addMenu(menu);
+    menuBar->addMenu(ToDoMenu);
 
+    CatMenu->addAction("Add Category", mainWidget,
+		       SLOT(addCatPressed()));
+    CatMenu->addAction("Delete Category", mainWidget,
+		       SLOT(delCatPressed()));
+    menuBar->addMenu(CatMenu);
+    
     //NOTE(hugo): Adding it all to the layout
     mainLayout.addWidget(menuBar);
     mainLayout.addWidget(mainWidget->GetMainGroupBox());
