@@ -1,8 +1,5 @@
-3
+2
 2 JTX
 Trouver date proj'
 Contacter NX
-1 Stage
-Préparer dossier Visa
-1 Robin
-Ecrire nouvelle
+0 Anchorage

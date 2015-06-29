@@ -394,9 +394,7 @@ ToDoWidget::deleteCategory()
     
 	    delete m_categories[FoundIndex];
 	    delete m_QCategories[FoundIndex];
-	    qDebug(QString::number(m_categories.size()).toLatin1());
 	    m_categories.remove(FoundIndex);
-	    qDebug(QString::number(m_categories.size()).toLatin1());
 	    m_QCategories.remove(FoundIndex);
 	}
     else
