@@ -7,7 +7,9 @@
 #include <QVector>
 #include <QString>
 #include <QMenuBar>
-
+#include <QLineEdit>
+#include <QLabel>
+#include <QPushButton>
 #include <QMessageBox>
 
 #include <QDebug>
@@ -46,7 +48,8 @@ class ToDoWidget : public QWidget
 	void SaveFile();
 	void addPressed();
 	void delPressed();
-
+	void addToDoItem();
+	void deleteToDoItem();
       
  private:
 	QString m_filename;
@@ -54,10 +57,12 @@ class ToDoWidget : public QWidget
 	QVector<ToDoCategoryWidget*> m_QCategories;
 	QGroupBox* m_mainGroupBox;
 	QHBoxLayout *m_mainGroupBoxLayout;
+	QWidget* actionWindow;
+	QLineEdit* catNameLineEdit;
+	QLineEdit* toDoNameLineEdit;
     
 	void LoadFile();
-	void addToDoItem(QString CategoryName, QString ItemName);
-	void deleteToDoItem(QString ItemName);
+
 
 };
 

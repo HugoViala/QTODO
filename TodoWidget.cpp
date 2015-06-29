@@ -88,33 +88,40 @@ ToDoWidget::LoadFile()
 	}
 }
 
-		       //TODO(hugo): Test this.
-		       void
-		       ToDoWidget::addToDoItem(QString CategoryName, QString ItemName)
-		       {
-			   for(int CategoryIndex = 0;
-			       CategoryIndex < m_categories.size();
-			       CategoryIndex++)
-			       {
-				   if(m_categories[CategoryIndex]->name == CategoryName)
-				       {
-					   m_categories[CategoryIndex]->items.push_back(ItemName);
+//TODO(hugo): Test this.
+void
+ToDoWidget::addToDoItem()
+{
+    QString CategoryName = catNameLineEdit->text();
+    QString ItemName = toDoNameLineEdit->text();
+    
+    for(int CategoryIndex = 0;
+	CategoryIndex < m_categories.size();
+	CategoryIndex++)
+	{
+	    
+	    if(m_categories[CategoryIndex]->name == CategoryName)
+		{
+		    m_categories[CategoryIndex]->items.push_back(ItemName);
 
-					   //NOTE(hugo): I assume that m_categories and m_QCategories
-					   // are correlated concerning the category they represent
+		    //NOTE(hugo): I assume that m_categories and m_QCategories
+		    // are correlated concerning the category they represent
 
-					   m_QCategories[CategoryIndex]->Items->addItem(
-											new QListWidgetItem(ItemName,
-													    m_QCategories[CategoryIndex]->Items));
-					   return;
-				       }
-			       }
-		       }
+		    m_QCategories[CategoryIndex]->Items->addItem(
+								 new QListWidgetItem(ItemName,
+										     m_QCategories[CategoryIndex]->Items));
+		    break;
+		}
+	}
+
+    delete actionWindow;
+}
 
 //TODO(hugo): Test this.
 void
-ToDoWidget::deleteToDoItem(QString ItemName)
+ToDoWidget::deleteToDoItem()
 {
+    QString ItemName = toDoNameLineEdit->text();
     for(int CategoryIndex = 0;
 	CategoryIndex < m_categories.size();
 	CategoryIndex++)
@@ -148,12 +155,39 @@ ToDoWidget::SaveFile()
 void
 ToDoWidget::addPressed()
 {
-    qDebug("calling");
     QMessageBox::information(0,
 			     QString("Add"),
 			     QString("Add"),
 			     QMessageBox::Ok);
 
+    actionWindow = new QWidget();
+    actionWindow->setVisible(true);
+    actionWindow->setWindowTitle("What to add ?");
+
+    QVBoxLayout* mainLayout = new QVBoxLayout();
+    QLabel* catNameLabel = new QLabel("Category Name",
+				      actionWindow);
+    catNameLineEdit = new QLineEdit(actionWindow);
+    QLabel* toDoNameLabel = new QLabel("ToDo Name",
+				       actionWindow);
+    toDoNameLineEdit = new QLineEdit(actionWindow);
+
+    QPushButton* okButton = new QPushButton("Valider",
+					    actionWindow);
+    
+    
+    mainLayout->addWidget(catNameLabel);
+    mainLayout->addWidget(catNameLineEdit);
+    mainLayout->addWidget(toDoNameLabel);
+    mainLayout->addWidget(toDoNameLineEdit);
+    mainLayout->addWidget(okButton);
+    
+    actionWindow->setLayout(mainLayout);
+
+    QObject::connect(okButton,
+		     SIGNAL(clicked()),
+		     this,
+		     SLOT(addToDoItem()));
 }
 
 
