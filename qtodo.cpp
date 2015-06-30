@@ -53,27 +53,23 @@ main(int argc, char** argv)
 
     //NOTE(hugo): Creating the Menu Bar
     //TODO(hugo): Make a more beautiful bar
-    QMenuBar* menuBar = new QMenuBar(centralWidget);
-    menuBar->setNativeMenuBar(true);
-    menuBar->setDefaultUp(true);
-    QMenu* ToDoMenu = new QMenu("ToDoS");
-    QMenu* CatMenu = new QMenu("Categories");
+    QMenuBar* menuBar = window.menuBar();
+    QMenu* ToDoMenu = menuBar->addMenu("ToDoS");
+    QMenu* CatMenu = menuBar->addMenu("Category");
 
     ToDoMenu->addAction("Add ToDo", mainWidget,
 			SLOT(addPressed()),
 			QKeySequence("Ctrl+N"));
     ToDoMenu->addAction("Delete ToDo", mainWidget,
 		    SLOT(delPressed()));
-    menuBar->addMenu(ToDoMenu);
+    
 
     CatMenu->addAction("Add Category", mainWidget,
 		       SLOT(addCatPressed()));
     CatMenu->addAction("Delete Category", mainWidget,
 		       SLOT(delCatPressed()));
-    menuBar->addMenu(CatMenu);
     
     //NOTE(hugo): Adding it all to the layout
-    mainLayout.addWidget(menuBar);
     mainLayout.addWidget(mainWidget->GetMainGroupBox());
 
         
