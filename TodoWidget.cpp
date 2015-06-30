@@ -23,6 +23,8 @@ ToDoWidget::ToDoWidget(QString filename, QWidget* window)
 	    //IMPORTANT(hugo): Parent ?
 	    CurrentCategoryWidget->GroupBox =
 		new QGroupBox(CurrentCategory->name);
+	    CurrentCategoryWidget->GroupBox->
+		setStyleSheet("color: " + color(CategoryIndex));
 	    CurrentCategoryWidget->Layout = new QVBoxLayout();
 	    //IMPORTANT(hugo): Parent ? Is there a way to insert the
 	    // list widget without creating a layout ?
@@ -347,6 +349,8 @@ ToDoWidget::addCategory()
     ToDoCategoryWidget* newQCategory = new ToDoCategoryWidget();
     newQCategory->GroupBox = new QGroupBox(catName,
 					   this);
+    newQCategory->GroupBox->
+	setStyleSheet("color: " + color(m_QCategories.size()+ 1));
     newQCategory->Layout = new QVBoxLayout();
     newQCategory->Items = new QListWidget();
 
@@ -409,7 +413,22 @@ ToDoWidget::deleteCategory()
     SaveFile();
 }
 
+QString
+ToDoWidget::color(int i)
+{
+    if(i == 0)
+	return "blue";
+    if(i == 1)
+	return "darkorange";
+    if(i == 2)
+	return "green";
+    if(i == 3)
+	return "gold";
+    if(i == 4)
+	return "red";
 
+    return "black";
+}
 
 
 #include "ToDoWidget.moc"

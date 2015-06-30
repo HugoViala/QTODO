@@ -36,7 +36,7 @@ main(int argc, char** argv)
     QMainWindow window;
     window.setWindowTitle("QTODO");
     window.resize(400,500);
-
+    window.setWindowIcon(QIcon("2048.jpg"));
     
     //NOTE(hugo): Creating main layout
     //IMPORTANT(hugo): Should we set the parent of mainLayout to window ?

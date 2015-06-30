@@ -65,7 +65,7 @@ class ToDoWidget : public QWidget
 	QLineEdit* toDoNameLineEdit;
     
 	void LoadFile();
-
+	QString color(int i);
 
 };
 
