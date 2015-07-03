@@ -124,7 +124,7 @@ ToDoWidget::addToDoItem()
 void
 ToDoWidget::deleteToDoItem()
 {
-    QString ItemName = toDoNameLineEdit->text();
+    QString ItemName = todoChoice->currentText();
     bool found = false;
     for(int CategoryIndex = 0;
 	CategoryIndex < m_categories.size();
@@ -267,13 +267,26 @@ ToDoWidget::delPressed()
     QVBoxLayout* mainLayout = new QVBoxLayout();
     QLabel* toDoNameLabel = new QLabel("ToDo Name",
 				       actionWindow);
-    toDoNameLineEdit = new QLineEdit(actionWindow);
+    //toDoNameLineEdit = new QLineEdit(actionWindow);
+    todoChoice = new QComboBox(actionWindow);
+    for(int CategoryIndex = 0;
+	CategoryIndex < m_categories.size();
+	++CategoryIndex)
+    {
+	for(int TodoIndex = 0;
+	    TodoIndex < m_categories[CategoryIndex]->items.size();
+	    ++TodoIndex)
+	{
+	    todoChoice->addItem(m_categories[CategoryIndex]
+				->items[TodoIndex]);
+	}
+    }
     
     QPushButton* okButton = new QPushButton("Valider",
 					    actionWindow);
     
     mainLayout->addWidget(toDoNameLabel);
-    mainLayout->addWidget(toDoNameLineEdit);
+    mainLayout->addWidget(todoChoice);
     mainLayout->addWidget(okButton);
     
     actionWindow->setLayout(mainLayout);

@@ -65,7 +65,8 @@ class ToDoWidget : public QWidget
 	QLineEdit* catNameLineEdit;
 	QLineEdit* toDoNameLineEdit;
 	QComboBox* categoryChoice;
-    
+	QComboBox* todoChoice;
+	
 	void LoadFile();
 	QString color(int i);
 
