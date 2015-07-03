@@ -1,6 +1,5 @@
 #include "ToDoWidget.h"
 
-
 ToDoWidget::ToDoWidget(QString filename, QWidget* window)
     : m_filename(filename), m_categories(), m_QCategories()
 {
@@ -96,7 +95,7 @@ ToDoWidget::LoadFile()
 void
 ToDoWidget::addToDoItem()
 {
-    QString CategoryName = catNameLineEdit->text();
+    QString CategoryName = categoryChoice->currentText();
     QString ItemName = toDoNameLineEdit->text();
     
     for(int CategoryIndex = 0;
@@ -224,7 +223,14 @@ ToDoWidget::addPressed()
     QVBoxLayout* mainLayout = new QVBoxLayout();
     QLabel* catNameLabel = new QLabel("Category Name",
 				      actionWindow);
-    catNameLineEdit = new QLineEdit(actionWindow);
+    //catNameLineEdit = new QLineEdit(actionWindow);
+    categoryChoice = new QComboBox(actionWindow);
+    for(int CategoryIndex = 0;
+	CategoryIndex < m_categories.size();
+	++CategoryIndex)
+    {
+	categoryChoice->addItem(m_categories[CategoryIndex]->name);
+    }
     QLabel* toDoNameLabel = new QLabel("ToDo Name",
 				       actionWindow);
     toDoNameLineEdit = new QLineEdit(actionWindow);
@@ -234,7 +240,7 @@ ToDoWidget::addPressed()
     
     
     mainLayout->addWidget(catNameLabel);
-    mainLayout->addWidget(catNameLineEdit);
+    mainLayout->addWidget(categoryChoice);
     mainLayout->addWidget(toDoNameLabel);
     mainLayout->addWidget(toDoNameLineEdit);
     mainLayout->addWidget(okButton);
@@ -243,7 +249,7 @@ ToDoWidget::addPressed()
 
     QObject::connect(okButton,
 		     SIGNAL(clicked()),
-			 this,
+		     this,
 		     SLOT(addToDoItem()));
 }
 

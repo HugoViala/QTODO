@@ -31,10 +31,10 @@ int
 main(int argc, char** argv)
 {
     QApplication app(argc, argv);
-    if(argc == 1)
+    /*if(argc == 1)
     {
 	return();
-    }
+	}*/
     //NOTE(hugo): Creating Window
     QMainWindow window;
     window.setWindowTitle("QTODO");

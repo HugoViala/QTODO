@@ -11,6 +11,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QMessageBox>
+#include <QComboBox>
 
 #include <QDebug>
 
@@ -63,6 +64,7 @@ class ToDoWidget : public QWidget
 	QWidget* actionWindow;
 	QLineEdit* catNameLineEdit;
 	QLineEdit* toDoNameLineEdit;
+	QComboBox* categoryChoice;
     
 	void LoadFile();
 	QString color(int i);
