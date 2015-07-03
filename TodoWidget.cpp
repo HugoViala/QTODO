@@ -338,13 +338,20 @@ ToDoWidget::delCatPressed()
     QVBoxLayout* mainLayout = new QVBoxLayout();
     QLabel* catNameLabel = new QLabel("Category Name",
 				       actionWindow);
-    catNameLineEdit = new QLineEdit(actionWindow);
+    //catNameLineEdit = new QLineEdit(actionWindow);
+    categoryChoice = new QComboBox(actionWindow);
+    for(int CategoryIndex = 0;
+	CategoryIndex < m_categories.size();
+	++CategoryIndex)
+    {
+	categoryChoice->addItem(m_categories[CategoryIndex]->name);
+    }    
     
     QPushButton* okButton = new QPushButton("Valider",
 					    actionWindow);
     
     mainLayout->addWidget(catNameLabel);
-    mainLayout->addWidget(catNameLineEdit);
+    mainLayout->addWidget(categoryChoice);
     mainLayout->addWidget(okButton);
     
     actionWindow->setLayout(mainLayout);
@@ -389,7 +396,7 @@ void
 ToDoWidget::deleteCategory()
 {
 
-    QString categoryName = catNameLineEdit->text();
+    QString categoryName = categoryChoice->currentText();
     int FoundIndex = -1;
 
     for(int CatIndex = 0;
