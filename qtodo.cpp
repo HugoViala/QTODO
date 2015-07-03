@@ -31,7 +31,10 @@ int
 main(int argc, char** argv)
 {
     QApplication app(argc, argv);
-
+    if(argc == 1)
+    {
+	return();
+    }
     //NOTE(hugo): Creating Window
     QMainWindow window;
     window.setWindowTitle("QTODO");
@@ -41,15 +44,14 @@ main(int argc, char** argv)
     //NOTE(hugo): Creating main layout
     //IMPORTANT(hugo): Should we set the parent of mainLayout to window ?
     QVBoxLayout mainLayout;
-
+    
     //NOTE(hugo): Just a token to have a control structure.
     QWidget* centralWidget = new QWidget(&window);
     centralWidget->setLayout(&mainLayout);
     
     ToDoWidget* mainWidget = new ToDoWidget("test.txt", &window); 
-
-    window.setCentralWidget(centralWidget);
     
+    window.setCentralWidget(centralWidget);
 
     //NOTE(hugo): Creating the Menu Bar
     //TODO(hugo): Make a more beautiful bar
