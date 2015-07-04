@@ -55,6 +55,9 @@ class ToDoWidget : public QWidget
 	void delCatPressed();
 	void addCategory();
 	void deleteCategory();
+	void openFilePressed();
+	void saveAsPressed();
+	
  private:
 	QString m_filename;
 	QVector<ToDoCategory*> m_categories;

@@ -456,6 +456,15 @@ ToDoWidget::color(int i)
     return "black";
 }
 
+void
+ToDoWidget::openFilePressed()
+{
+}
+
+void ToDoWidget::saveAsPressed()
+{
+}
+
 
 #include "ToDoWidget.moc"
 		       

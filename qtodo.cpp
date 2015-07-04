@@ -26,6 +26,9 @@
 //TODO(hugo): Maybe stock the todos in a better structure
 // rather than a text file... Lua ? XML ? JSON ?
 
+// TODO(hugo): Add an "Open File" to chose your own todofile
+// TODO(hugo): Add an "Save As..." to chose where to store your own todofile
+
 
 int
 main(int argc, char** argv)
@@ -56,9 +59,16 @@ main(int argc, char** argv)
     //NOTE(hugo): Creating the Menu Bar
     //TODO(hugo): Make a more beautiful bar
     QMenuBar* menuBar = window.menuBar();
+    QMenu* FileMenu = menuBar->addMenu("File");
     QMenu* ToDoMenu = menuBar->addMenu("ToDoS");
     QMenu* CatMenu = menuBar->addMenu("Category");
 
+    FileMenu->addAction("Open File...", mainWidget,
+			SLOT(openFilePressed()));
+    FileMenu->addAction("Save As...", mainWidget,
+			SLOT(saveAsPressed()),
+			QKeySequence("Ctrl+S"));
+    
     ToDoMenu->addAction("Add ToDo", mainWidget,
 			SLOT(addPressed()),
 			QKeySequence("Ctrl+N"));
