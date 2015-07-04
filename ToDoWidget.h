@@ -13,6 +13,7 @@
 #include <QMessageBox>
 #include <QComboBox>
 
+#include <QFileDialog>
 #include <QDebug>
 
 
@@ -57,6 +58,8 @@ class ToDoWidget : public QWidget
 	void deleteCategory();
 	void openFilePressed();
 	void saveAsPressed();
+	void changeCache(QString newString);
+	void openFile();
 	
  private:
 	QString m_filename;
@@ -69,6 +72,7 @@ class ToDoWidget : public QWidget
 	QLineEdit* toDoNameLineEdit;
 	QComboBox* categoryChoice;
 	QComboBox* todoChoice;
+	QString* cacheString;
 	
 	void LoadFile();
 	QString color(int i);

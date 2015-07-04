@@ -459,10 +459,89 @@ ToDoWidget::color(int i)
 void
 ToDoWidget::openFilePressed()
 {
+    QFileDialog* fileDialog = new QFileDialog(this,Qt::Window);
+
+    QStringList filters;
+    filters << "Text file (*.txt)";
+    
+    fileDialog->setAcceptMode(QFileDialog::AcceptOpen);
+    fileDialog->setNameFilters(filters);
+    fileDialog->setVisible(true);
+
+    QObject::connect(fileDialog, SIGNAL(currentChanged(QString)),
+		     this, SLOT(changeCache(QString)));
+    QObject::connect(fileDialog, SIGNAL(accepted()),
+		     this, SLOT(openFile()));
 }
 
 void ToDoWidget::saveAsPressed()
 {
+}
+
+void
+ToDoWidget::changeCache(QString newString)
+{
+    if(!cacheString)
+	delete cacheString;
+    cacheString = new QString(newString);
+    qDebug(newString.toLatin1());
+}
+
+void
+ToDoWidget::openFile()
+{
+    qDebug("Opening file " + cacheString->toLatin1());
+
+
+    
+    //NOTE(hugo): Clearing current session
+    for(int Index = 0;
+	Index < m_categories.size();
+	++Index)
+    {
+	delete m_categories[Index];
+	delete m_QCategories[Index];
+    }
+    m_categories.clear();
+    m_QCategories.clear();
+
+    m_filename = *cacheString;
+    LoadFile();
+
+    for(int CategoryIndex = 0;
+	CategoryIndex < m_categories.size();
+	++CategoryIndex)
+    {
+	ToDoCategory* CurrentCategory = m_categories[CategoryIndex];
+	ToDoCategoryWidget* CurrentCategoryWidget = new ToDoCategoryWidget();
+	//IMPORTANT(hugo): Parent ?
+	CurrentCategoryWidget->GroupBox =
+	    new QGroupBox(CurrentCategory->name);
+	CurrentCategoryWidget->GroupBox->
+	    setStyleSheet("color: " + color(CategoryIndex));
+	CurrentCategoryWidget->Layout = new QVBoxLayout();
+	//IMPORTANT(hugo): Parent ? Is there a way to insert the
+	// list widget without creating a layout ?
+	CurrentCategoryWidget->Items =  new QListWidget();
+	
+	for(int ItemIndex = 0;
+	    ItemIndex < CurrentCategory->items.size();
+	    ++ItemIndex)
+	{
+	    CurrentCategoryWidget->Items->addItem(new QListWidgetItem(CurrentCategory->items[ItemIndex],
+								      CurrentCategoryWidget->Items));
+	}
+        
+	CurrentCategoryWidget->Layout->
+	    addWidget(CurrentCategoryWidget->Items);
+	CurrentCategoryWidget->GroupBox->
+	    setLayout(CurrentCategoryWidget->Layout);
+	m_mainGroupBoxLayout->
+	    addWidget(CurrentCategoryWidget->GroupBox);
+	
+	m_QCategories.append(CurrentCategoryWidget);
+    }
+    
 }
 
 
