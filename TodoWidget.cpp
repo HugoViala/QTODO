@@ -50,8 +50,7 @@ ToDoWidget::ToDoWidget(QString filename, QWidget* window)
     //IMPORTANT(hugo): What should the parent of this widget be ?
     m_mainGroupBox = new QGroupBox("ToDo", window);
 
-    //IMPORTANT(hugo): Parent ?
-    m_mainGroupBoxLayout = new QHBoxLayout();
+    m_mainGroupBoxLayout = new QHBoxLayout(this);
 
     CreatingWidgetsFromData();
 
@@ -231,7 +230,7 @@ ToDoWidget::addPressed()
     
     actionWindow->resize(200,100);
     
-    QVBoxLayout* mainLayout = new QVBoxLayout();
+    QVBoxLayout* mainLayout = new QVBoxLayout(actionWindow);
     QLabel* catNameLabel = new QLabel("Category Name",
 				      actionWindow);
     //catNameLineEdit = new QLineEdit(actionWindow);
@@ -275,7 +274,7 @@ ToDoWidget::delPressed()
 
     actionWindow->resize(200,100);
     
-    QVBoxLayout* mainLayout = new QVBoxLayout();
+    QVBoxLayout* mainLayout = new QVBoxLayout(actionWindow);
     QLabel* toDoNameLabel = new QLabel("ToDo Name",
 				       actionWindow);
     //toDoNameLineEdit = new QLineEdit(actionWindow);
@@ -317,7 +316,7 @@ ToDoWidget::addCatPressed()
 
     actionWindow->resize(200,100);
     
-    QVBoxLayout* mainLayout = new QVBoxLayout();
+    QVBoxLayout* mainLayout = new QVBoxLayout(actionWindow);
     QLabel* catNameLabel = new QLabel("Category Name",
 				       actionWindow);
     catNameLineEdit = new QLineEdit(actionWindow);
@@ -346,7 +345,7 @@ ToDoWidget::delCatPressed()
 
     actionWindow->resize(200,100);
     
-    QVBoxLayout* mainLayout = new QVBoxLayout();
+    QVBoxLayout* mainLayout = new QVBoxLayout(actionWindow);
     QLabel* catNameLabel = new QLabel("Category Name",
 				       actionWindow);
     //catNameLineEdit = new QLineEdit(actionWindow);
@@ -388,8 +387,8 @@ ToDoWidget::addCategory()
 					   this);
     newQCategory->GroupBox->
 	setStyleSheet("color: " + color(m_categories.size()-1));
-    newQCategory->Layout = new QVBoxLayout();
-    newQCategory->Items = new QListWidget();
+    newQCategory->Layout = new QVBoxLayout(this);
+    newQCategory->Items = new QListWidget(this);
 
     newQCategory->Layout->addWidget(newQCategory->Items);
     newQCategory->GroupBox->setLayout(newQCategory->Layout);
@@ -472,7 +471,7 @@ ToDoWidget::color(int i)
 void
 ToDoWidget::openFilePressed()
 {
-    QFileDialog* fileDialog = new QFileDialog(this,Qt::Window);
+    QFileDialog* fileDialog = new QFileDialog(0,Qt::Window);
 
     QStringList filters;
     filters << "Text file (*.txt)";
@@ -490,7 +489,7 @@ ToDoWidget::openFilePressed()
 void ToDoWidget::saveAsPressed()
 {
     QString saveName = QFileDialog::
-	getSaveFileName(this,
+	getSaveFileName(0,
 			QString("Save File"),
 			QString(),
 			QString("Text file (*.txt)"));

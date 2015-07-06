@@ -38,7 +38,7 @@ main(int argc, char** argv)
 	return();
 	}*/
     //NOTE(hugo): Creating Window
-    QMainWindow window;
+    QMainWindow window(0, Qt::Window);
     window.setWindowTitle("QTODO");
     window.resize(400,500);
     window.setWindowIcon(QIcon("2048.jpg"));
