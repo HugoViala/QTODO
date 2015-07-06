@@ -76,6 +76,7 @@ class ToDoWidget : public QWidget
 	
 	void LoadFile();
 	QString color(int i);
+	void CreatingWidgetsFromData();
 
 };
 
