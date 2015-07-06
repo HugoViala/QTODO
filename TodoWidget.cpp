@@ -476,6 +476,17 @@ ToDoWidget::openFilePressed()
 
 void ToDoWidget::saveAsPressed()
 {
+    QString saveName = QFileDialog::
+	getSaveFileName(this,
+			QString("Save File"),
+			QString(),
+			QString("Text file (*.txt)"));
+    if(!saveName.isEmpty())
+    {
+	m_filename = saveName;
+	SaveFile();
+    }
+    
 }
 
 void
