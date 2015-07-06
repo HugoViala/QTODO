@@ -42,7 +42,9 @@ ToDoWidget::ToDoWidget(QString filename, QWidget* window)
     : m_filename(filename), m_categories(), m_QCategories()
 {
     QWidget();
-    LoadFile();
+
+    if(!m_filename.isEmpty())
+	LoadFile();
     
     //NOTE(hugo): Creating the main groupBox containing all the 
     //IMPORTANT(hugo): What should the parent of this widget be ?
@@ -124,7 +126,9 @@ ToDoWidget::addToDoItem()
     }
 
     delete actionWindow;
-    SaveFile();
+
+    if(!m_filename.isEmpty())
+	SaveFile();
 }
 
 void
@@ -167,7 +171,8 @@ ToDoWidget::deleteToDoItem()
 			     "ToDo not found");
 
     delete actionWindow;
-    SaveFile();
+    if(!m_filename.isEmpty())
+	SaveFile();
 }
 
 
@@ -395,7 +400,8 @@ ToDoWidget::addCategory()
     
     delete actionWindow;
 
-    SaveFile();
+    if(!m_filename.isEmpty())
+	SaveFile();
 }
 
 void
@@ -442,7 +448,8 @@ ToDoWidget::deleteCategory()
     
     delete actionWindow;
 
-    SaveFile();
+    if(!m_filename.isEmpty())
+	SaveFile();
 }
 
 QString

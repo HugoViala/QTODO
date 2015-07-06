@@ -51,7 +51,7 @@ main(int argc, char** argv)
     QWidget* centralWidget = new QWidget(&window);
     centralWidget->setLayout(&mainLayout);
     
-    ToDoWidget* mainWidget = new ToDoWidget("test.txt", &window); 
+    ToDoWidget* mainWidget = new ToDoWidget(QString(), &window); 
     
     window.setCentralWidget(centralWidget);
 
