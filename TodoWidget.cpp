@@ -376,7 +376,7 @@ ToDoWidget::addCategory()
     newQCategory->GroupBox = new QGroupBox(catName,
 					   this);
     newQCategory->GroupBox->
-	setStyleSheet("color: " + color(m_QCategories.size()+ 1));
+	setStyleSheet("color: " + color(m_categories.size()-1));
     newQCategory->Layout = new QVBoxLayout();
     newQCategory->Items = new QListWidget();
 
@@ -516,24 +516,10 @@ clearLayout(QLayout* layout)
 void
 ToDoWidget::openFile()
 {
-    qDebug("Opening file " + cacheString->toLatin1());
-
-
-    
-    //NOTE(hugo): Clearing current session
-    /*for(int Index = 0;
-	Index < m_categories.size();
-	++Index)
-    {
-	delete m_categories[Index];
-	delete m_QCategories[Index];
-	}*/
-
     clearLayout(m_mainGroupBoxLayout);
 
     m_categories.clear();
     m_QCategories.clear();
-
 
     m_filename = *cacheString;
     LoadFile();
