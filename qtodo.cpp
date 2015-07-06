@@ -62,15 +62,20 @@ main(int argc, char** argv)
     QMenu* ToDoMenu = menuBar->addMenu("ToDoS");
     QMenu* CatMenu = menuBar->addMenu("Category");
 
+
+    FileMenu->addAction("New File...", mainWidget,
+			SLOT(newFilePressed()),
+			QKeySequence("Ctrl+N"));
     FileMenu->addAction("Open File...", mainWidget,
-			SLOT(openFilePressed()));
+			SLOT(openFilePressed()),
+			QKeySequence("Ctrl+O"));
     FileMenu->addAction("Save As...", mainWidget,
 			SLOT(saveAsPressed()),
 			QKeySequence("Ctrl+S"));
     
     ToDoMenu->addAction("Add ToDo", mainWidget,
 			SLOT(addPressed()),
-			QKeySequence("Ctrl+N"));
+			QKeySequence("Ctrl+A"));
     ToDoMenu->addAction("Delete ToDo", mainWidget,
 		    SLOT(delPressed()));
     

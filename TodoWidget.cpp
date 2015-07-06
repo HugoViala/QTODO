@@ -541,6 +541,16 @@ ToDoWidget::openFile()
     
 }
 
+void
+ToDoWidget::newFilePressed()
+{
+    clearLayout(m_mainGroupBoxLayout);
+    m_categories.clear();
+    m_QCategories.clear();
+    m_filename = QString();
+    
+}
+
 
 #include "ToDoWidget.moc"
 		       

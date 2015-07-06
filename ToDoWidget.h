@@ -60,6 +60,7 @@ class ToDoWidget : public QWidget
 	void saveAsPressed();
 	void changeCache(QString newString);
 	void openFile();
+	void newFilePressed();
 	
  private:
 	QString m_filename;
