@@ -488,6 +488,21 @@ ToDoWidget::changeCache(QString newString)
 }
 
 void
+clearLayout(QLayout* layout)
+{
+    if(layout)
+    {
+	QLayoutItem* item;
+	while((item = layout->takeAt(0)) != NULL)
+	{
+	    delete item->widget();
+	    delete item;
+	}
+    }
+
+}
+
+void
 ToDoWidget::openFile()
 {
     qDebug("Opening file " + cacheString->toLatin1());
@@ -495,15 +510,19 @@ ToDoWidget::openFile()
 
     
     //NOTE(hugo): Clearing current session
-    for(int Index = 0;
+    /*for(int Index = 0;
 	Index < m_categories.size();
 	++Index)
     {
 	delete m_categories[Index];
 	delete m_QCategories[Index];
-    }
+	}*/
+
+    clearLayout(m_mainGroupBoxLayout);
+
     m_categories.clear();
     m_QCategories.clear();
+
 
     m_filename = *cacheString;
     LoadFile();

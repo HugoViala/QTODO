@@ -19,7 +19,6 @@
 
 
 #include <QDebug>
-#include <QtGlobal>
 
 #include "ToDoWidget.h"
 
